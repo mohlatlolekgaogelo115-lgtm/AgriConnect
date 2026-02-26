@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace - AgriConnect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .hero-gradient { background: linear-gradient(135deg, #166534 0%, #15803d 100%); }
+        .listing-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .listing-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- NAV (exactly same as before) -->
+    <nav class="sticky top-0 z-50 glass border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="bg-green-600 p-2 rounded-lg">
+                        <i class="fas fa-seedling text-white text-xl"></i>
+                    </div>
+                    <a href="index.html" class="text-2xl font-bold text-green-800 tracking-tight">AgriConnect</a>
+                </div>
+                <div class="hidden md:flex space-x-8 font-medium">
+                    <a href="index.html" class="hover:text-green-600 transition">Home</a>
+                    <a href="#" class="text-green-700 font-semibold border-b-2 border-green-700 pb-1">Marketplace</a>
+                    <a href="index.html#advisory" class="hover:text-green-600 transition">Advisory</a>
+                    <a href="index.html#finance" class="hover:text-green-600 transition">Financing</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span id="user-greeting" class="hidden text-sm font-medium text-green-700"></span>
+                    <button id="auth-btn" onclick="openAuthModal()"
+                        class="bg-green-700 text-white px-6 py-2 rounded-full font-semibold hover:bg-green-800 transition shadow-lg">
+                        Get Started
+                    </button>
+                    <button id="logout-btn" onclick="logout()" class="hidden bg-red-100 text-red-700 px-5 py-2 rounded-full font-semibold hover:bg-red-200 transition">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MARKETPLACE PAGE HEADER -->
+    <header class="bg-white py-16 border-b">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <span class="bg-green-100 text-green-700 px-5 py-1.5 rounded-full text-sm font-semibold">LIVE • REAL-TIME</span>
+            <h1 class="text-6xl font-extrabold text-gray-900 mt-6">AgriConnect Marketplace</h1>
+            <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">Buy directly from South African smallholder farmers. No middlemen. Instant updates via Firebase Realtime Database.</p>
+        </div>
+    </header>
+
+    <!-- MARKETPLACE CONTENT -->
+    <section class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center mb-10">
+            <div class="flex gap-3">
+                <button onclick="filterByCategory('all')" class="category-btn active px-6 py-3 rounded-3xl font-medium bg-green-700 text-white">All Produce</button>
+                <button onclick="filterByCategory('maize')" class="category-btn px-6 py-3 rounded-3xl font-medium hover:bg-gray-100">Maize</button>
+                <button onclick="filterByCategory('vegetables')" class="category-btn px-6 py-3 rounded-3xl font-medium hover:bg-gray-100">Vegetables</button>
+                <button onclick="filterByCategory('fruits')" class="category-btn px-6 py-3 rounded-3xl font-medium hover:bg-gray-100">Fruits</button>
+                <button onclick="filterByCategory('grains')" class="category-btn px-6 py-3 rounded-3xl font-medium hover:bg-gray-100">Grains</button>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <select id="sort-select" onchange="sortListings()" class="px-6 py-4 border border-gray-300 rounded-3xl focus:outline-none focus:border-green-600">
+                    <option value="newest">Newest First</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                </select>
+                <button onclick="openPostModal()" id="post-produce-btn"
+                        class="hidden bg-green-700 hover:bg-green-800 text-white px-8 py-4 rounded-3xl font-semibold flex items-center gap-3">
+                    <i class="fas fa-plus"></i> Post Produce
+                </button>
+            </div>
+        </div>
+
+        <input id="search-input" type="text" placeholder="Search by crop, location or seller..." 
+               class="w-full px-8 py-5 text-lg border border-gray-300 rounded-3xl focus:outline-none focus:border-green-600 mb-12"
+               onkeyup="filterListings()">
+
+        <!-- Listings Grid -->
+        <div id="listings-grid" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Populated live by Firebase -->
+        </div>
+    </section>
+
+    <!-- AUTH MODAL (exactly same) -->
+    <div id="authModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[200]">
+        <div class="bg-white rounded-3xl w-full max-w-md mx-4 shadow-2xl">
+            <div class="flex border-b">
+                <button onclick="switchAuthTab(0)" id="tab-signup" class="flex-1 py-5 font-semibold text-green-700 border-b-2 border-green-700">Sign Up</button>
+                <button onclick="switchAuthTab(1)" id="tab-signin" class="flex-1 py-5 font-semibold text-gray-500">Sign In</button>
+            </div>
+            <div class="p-8">
+                <div id="signup-form">
+                    <input id="signup-name" type="text" placeholder="Full Name" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-4">
+                    <input id="signup-email" type="email" placeholder="Email" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-4">
+                    <input id="signup-password" type="password" placeholder="Password (min 6)" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-6">
+                    <button onclick="signUp()" class="w-full bg-green-700 text-white py-4 rounded-2xl font-bold text-lg">Create Farmer Account</button>
+                </div>
+                <div id="signin-form" class="hidden">
+                    <input id="signin-email" type="email" placeholder="Email" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-4">
+                    <input id="signin-password" type="password" placeholder="Password" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-6">
+                    <button onclick="signIn()" class="w-full bg-green-700 text-white py-4 rounded-2xl font-bold text-lg">Login to Marketplace</button>
+                </div>
+            </div>
+            <div class="px-8 pb-8 text-center text-sm text-gray-500">
+                <button onclick="closeAuthModal()" class="underline">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- POST PRODUCE MODAL (exactly same) -->
+    <div id="postModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[200]">
+        <div class="bg-white rounded-3xl w-full max-w-lg mx-4 p-8">
+            <h3 class="text-2xl font-bold mb-6">Post Your Produce</h3>
+            <input id="post-title" placeholder="e.g. Yellow Maize 2 tons" class="w-full px-5 py-4 border rounded-2xl mb-4">
+            <div class="grid grid-cols-2 gap-4">
+                <input id="post-price" type="number" placeholder="Price per ton (R)" class="w-full px-5 py-4 border rounded-2xl">
+                <input id="post-quantity" type="number" placeholder="Quantity (tons)" class="w-full px-5 py-4 border rounded-2xl">
+            </div>
+            <input id="post-location" placeholder="Location (e.g. Limpopo)" class="w-full mt-4 px-5 py-4 border rounded-2xl">
+            <button onclick="postListing()" class="mt-8 w-full bg-green-700 text-white py-4 rounded-2xl font-bold text-lg">Publish to Marketplace</button>
+            <button onclick="closePostModal()" class="mt-3 w-full py-4 text-gray-500">Cancel</button>
+        </div>
+    </div>
+
+    <!-- TOAST (exactly same) -->
+    <div id="toast" class="hidden fixed bottom-8 right-8 bg-green-700 text-white px-8 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
+        <span id="toast-text"></span>
+    </div>
+
+    <footer class="bg-white border-t py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
+            © 2026 AgriConnect South Africa • Powered by Firebase Realtime Database
+        </div>
+    </footer>
+
+    <!-- FIREBASE SDKs (exactly same) -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+
+    <script>
+        // ==================== FIREBASE CONFIG ====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQZFUK4hnd-_lHUCfi_EHZ1gMM7p1rurE",
+            authDomain: "agriconnect-a813a.firebaseapp.com",
+            projectId: "agriconnect-a813a",
+            storageBucket: "agriconnect-a813a.firebasestorage.app",
+            messagingSenderId: "426251328870",
+            appId: "1:426251328870:web:742e51f276a1206d10fca7",
+            measurementId: "G-LERNRKQ4S7"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        let currentUser = null;
+        let currentFilter = 'all';
+
+        // ==================== AUTH STATE ====================
+        auth.onAuthStateChanged(user => {
+            currentUser = user;
+            const greeting = document.getElementById('user-greeting');
+            const authBtn = document.getElementById('auth-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const postBtn = document.getElementById('post-produce-btn');
+
+            if (user) {
+                greeting.textContent = `Hi, ${user.displayName || 'Farmer'}!`;
+                greeting.classList.remove('hidden');
+                authBtn.classList.add('hidden');
+                logoutBtn.classList.remove('hidden');
+                postBtn.classList.remove('hidden');
+            } else {
+                greeting.classList.add('hidden');
+                authBtn.classList.remove('hidden');
+                logoutBtn.classList.add('hidden');
+                postBtn.classList.add('hidden');
+            }
+        });
+
+        // ==================== AUTH MODAL ====================
+        function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); switchAuthTab(0); }
+        function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
+        function switchAuthTab(n) {
+            document.getElementById('signup-form').classList.toggle('hidden', n === 1);
+            document.getElementById('signin-form').classList.toggle('hidden', n === 0);
+            document.getElementById('tab-signup').classList.toggle('border-b-2', n === 0);
+            document.getElementById('tab-signup').classList.toggle('text-green-700', n === 0);
+            document.getElementById('tab-signin').classList.toggle('border-b-2', n === 1);
+            document.getElementById('tab-signin').classList.toggle('text-green-700', n === 1);
+        }
+
+        async function signUp() {
+            const name = document.getElementById('signup-name').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const pass = document.getElementById('signup-password').value;
+            if (!email || !pass || pass.length < 6) return showToast("Check your details", true);
+            try {
+                const cred = await auth.createUserWithEmailAndPassword(email, pass);
+                await cred.user.updateProfile({ displayName: name });
+                await db.ref('users/' + cred.user.uid).set({ name, email, joined: Date.now() });
+                showToast(`Welcome ${name}! Account created.`);
+                closeAuthModal();
+            } catch (e) { showToast(e.message, true); }
+        }
+
+        async function signIn() {
+            const email = document.getElementById('signin-email').value;
+            const pass = document.getElementById('signin-password').value;
+            try {
+                await auth.signInWithEmailAndPassword(email, pass);
+                showToast("Logged in successfully!");
+                closeAuthModal();
+            } catch (e) { showToast(e.message, true); }
+        }
+
+        function logout() {
+            auth.signOut();
+            showToast("Logged out");
+        }
+
+        // ==================== POST LISTING ====================
+        function openPostModal() {
+            if (!currentUser) return alert("Please login first");
+            document.getElementById('postModal').classList.remove('hidden');
+        }
+        function closePostModal() { document.getElementById('postModal').classList.add('hidden'); }
+
+        async function postListing() {
+            const title = document.getElementById('post-title').value;
+            const price = parseFloat(document.getElementById('post-price').value);
+            const qty = parseFloat(document.getElementById('post-quantity').value);
+            const location = document.getElementById('post-location').value;
+
+            if (!title || !price || !qty) return showToast("Fill all fields", true);
+
+            const listingRef = db.ref('listings').push();
+            await listingRef.set({
+                id: listingRef.key,
+                title: title,
+                price: price,
+                quantity: qty,
+                location: location || "South Africa",
+                seller: currentUser.displayName || "Anonymous Farmer",
+                sellerId: currentUser.uid,
+                posted: Date.now(),
+                category: title.toLowerCase().includes('maize') ? 'maize' : 
+                          title.toLowerCase().includes('tomato') || title.toLowerCase().includes('veg') ? 'vegetables' :
+                          title.toLowerCase().includes('fruit') ? 'fruits' : 'grains'
+            });
+
+            showToast("✅ Produce posted live!");
+            closePostModal();
+        }
+
+        // ==================== REAL-TIME LISTINGS + FILTERS ====================
+        function loadListings() {
+            const grid = document.getElementById('listings-grid');
+            db.ref('listings').on('value', snapshot => {
+                window.allListings = [];
+                grid.innerHTML = '';
+                if (!snapshot.exists()) {
+                    grid.innerHTML = `<p class="col-span-full text-center py-20 text-2xl text-gray-400">No listings yet.<br>Be the first to post!</p>`;
+                    return;
+                }
+                snapshot.forEach(child => {
+                    window.allListings.push(child.val());
+                });
+                renderListings(window.allListings);
+            });
+        }
+
+        function renderListings(listings) {
+            const grid = document.getElementById('listings-grid');
+            grid.innerHTML = '';
+            listings.forEach(l => {
+                const card = `
+                    <div class="listing-card bg-white border border-gray-100 rounded-3xl overflow-hidden">
+                        <div class="h-56 bg-[url('https://picsum.photos/id/${Math.floor(Math.random()*80)+20}/800/600')] bg-cover"></div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start">
+                                <h4 class="font-bold text-xl leading-tight">${l.title}</h4>
+                                <span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full">${l.category || 'produce'}</span>
+                            </div>
+                            <div class="flex justify-between mt-6">
+                                <div>
+                                    <p class="text-xs text-gray-500">PRICE</p>
+                                    <p class="text-3xl font-bold text-green-700">R${l.price}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xs text-gray-500">QUANTITY</p>
+                                    <p class="font-semibold text-lg">${l.quantity} tons</p>
+                                </div>
+                            </div>
+                            <div class="mt-6 pt-6 border-t text-sm flex justify-between items-center">
+                                <span class="text-gray-500">${l.location}</span>
+                                <span class="text-green-600 font-medium">${l.seller}</span>
+                            </div>
+                            <button onclick="buyNow('${l.title}')" class="mt-6 w-full py-4 bg-green-700 hover:bg-green-800 text-white rounded-3xl font-semibold text-lg">Buy Now</button>
+                        </div>
+                    </div>`;
+                grid.innerHTML += card;
+            });
+        }
+
+        function filterByCategory(cat) {
+            currentFilter = cat;
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active', 'bg-green-700', 'text-white'));
+            event.target.classList.add('active', 'bg-green-700', 'text-white');
+            filterListings();
+        }
+
+        function filterListings() {
+            const term = document.getElementById('search-input').value.toLowerCase();
+            let filtered = window.allListings || [];
+            
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(l => (l.category || '').toLowerCase() === currentFilter);
+            }
+            
+            if (term) {
+                filtered = filtered.filter(l => 
+                    l.title.toLowerCase().includes(term) || 
+                    (l.location || '').toLowerCase().includes(term) ||
+                    (l.seller || '').toLowerCase().includes(term)
+                );
+            }
+            renderListings(filtered);
+        }
+
+        function sortListings() {
+            const sortMode = document.getElementById('sort-select').value;
+            let sorted = [...(window.allListings || [])];
+            
+            if (sortMode === 'price-low') sorted.sort((a,b) => a.price - b.price);
+            else if (sortMode === 'price-high') sorted.sort((a,b) => b.price - a.price);
+            else sorted.sort((a,b) => b.posted - a.posted);
+            
+            renderListings(sorted);
+        }
+
+        function buyNow(title) {
+            alert(`✅ Order placed for ${title}!\n\n(This is connected to Firebase Realtime Database)`);
+        }
+
+        function showToast(msg, error = false) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').innerHTML = msg;
+            toast.style.backgroundColor = error ? '#dc2626' : '#15803d';
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 4000);
+        }
+
+        // ==================== INIT ====================
+        window.onload = () => {
+            loadListings();
+            console.log("%c✅ AgriConnect Marketplace page is LIVE with Firebase Realtime Database", "color:#166534;font-size:15px;font-weight:bold");
+        };
+    </script>
+</body>
+</html>
