@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financing - AgriConnect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .hero-gradient { background: linear-gradient(135deg, #166534 0%, #15803d 100%); }
+        .loan-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .loan-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- NAV (exactly same structure as marketplace.html and advisory.html) -->
+    <nav class="sticky top-0 z-50 glass border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="bg-green-600 p-2 rounded-lg">
+                        <i class="fas fa-seedling text-white text-xl"></i>
+                    </div>
+                    <a href="index.html" class="text-2xl font-bold text-green-800 tracking-tight">AgriConnect</a>
+                </div>
+                <div class="hidden md:flex space-x-8 font-medium">
+                    <a href="index.html" class="hover:text-green-600 transition">Home</a>
+                    <a href="marketplace.html" class="hover:text-green-600 transition">Marketplace</a>
+                    <a href="advisory.html" class="hover:text-green-600 transition">Advisory</a>
+                    <a href="#" class="text-green-700 font-semibold border-b-2 border-green-700 pb-1">Financing</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span id="user-greeting" class="hidden text-sm font-medium text-green-700"></span>
+                    <button id="auth-btn" onclick="openAuthModal()"
+                        class="bg-green-700 text-white px-6 py-2 rounded-full font-semibold hover:bg-green-800 transition shadow-lg">
+                        Get Started
+                    </button>
+                    <button id="logout-btn" onclick="logout()" class="hidden bg-red-100 text-red-700 px-5 py-2 rounded-full font-semibold hover:bg-red-200 transition">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- FINANCING PAGE HEADER -->
+    <header class="bg-white py-16 border-b">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <span class="bg-green-100 text-green-700 px-5 py-1.5 rounded-full text-sm font-semibold">INSTANT • SECURE • FARMER-FIRST</span>
+            <h1 class="text-6xl font-extrabold text-gray-900 mt-6">Input Financing</h1>
+            <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">Get credit for seeds, fertilizer, equipment &amp; more. Decisions in minutes. Powered by Firebase Realtime Database.</p>
+        </div>
+    </header>
+
+    <!-- FINANCING CONTENT -->
+    <section class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-3 gap-8">
+
+            <!-- AVAILABLE LOANS -->
+            <div class="lg:col-span-2 space-y-8">
+                <div class="bg-white rounded-3xl p-8 border border-gray-100">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+                        <i class="fas fa-hand-holding-dollar text-green-600"></i> Available Financing Options
+                    </h2>
+                    <div class="grid md:grid-cols-2 gap-6" id="loans-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- APPLY FORM -->
+                <div class="bg-white rounded-3xl p-8 border border-gray-100">
+                    <h2 class="text-3xl font-bold mb-6">Apply for Financing</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input id="loan-amount" type="number" placeholder="Amount needed (R)" class="w-full px-5 py-4 border border-gray-300 rounded-2xl focus:outline-none focus:border-green-600">
+                        <select id="loan-type" class="w-full px-5 py-4 border border-gray-300 rounded-2xl focus:outline-none focus:border-green-600">
+                            <option value="">Loan Type</option>
+                            <option value="Seeds & Fertilizer">Seeds &amp; Fertilizer</option>
+                            <option value="Equipment">Equipment</option>
+                            <option value="Irrigation">Irrigation</option>
+                            <option value="Transport">Transport</option>
+                        </select>
+                    </div>
+                    <input id="loan-purpose" placeholder="Purpose / Farm details" class="w-full mt-4 px-5 py-4 border border-gray-300 rounded-2xl focus:outline-none focus:border-green-600">
+                    <button onclick="applyForLoan()" class="mt-8 w-full py-4 bg-green-700 hover:bg-green-800 text-white rounded-3xl font-semibold text-lg">Submit Application</button>
+                </div>
+            </div>
+
+            <!-- SIDE PANEL -->
+            <div class="space-y-8">
+                <!-- MY APPLICATIONS -->
+                <div class="bg-white rounded-3xl p-8 border border-gray-100">
+                    <h3 class="font-bold text-xl mb-6 flex items-center gap-3">
+                        <i class="fas fa-file-invoice text-green-600"></i> My Applications
+                    </h3>
+                    <div id="my-applications" class="space-y-4 max-h-96 overflow-auto text-sm">
+                        <!-- Populated from Firebase -->
+                    </div>
+                </div>
+
+                <!-- QUICK FACTS -->
+                <div class="bg-white rounded-3xl p-8 border border-gray-100">
+                    <h3 class="font-bold text-xl mb-6">Why Farmers Choose Us</h3>
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="text-3xl">⚡</div>
+                            <div>
+                                <p class="font-semibold">Instant Approval</p>
+                                <p class="text-xs text-gray-500">Based on your harvest history</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="text-3xl">📉</div>
+                            <div>
+                                <p class="font-semibold">0% Interest First 30 Days</p>
+                                <p class="text-xs text-gray-500">For new farmers</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AUTH MODAL (exactly same) -->
+    <div id="authModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[200]">
+        <div class="bg-white rounded-3xl w-full max-w-md mx-4 shadow-2xl">
+            <div class="flex border-b">
+                <button onclick="switchAuthTab(0)" id="tab-signup" class="flex-1 py-5 font-semibold text-green-700 border-b-2 border-green-700">Sign Up</button>
+                <button onclick="switchAuthTab(1)" id="tab-signin" class="flex-1 py-5 font-semibold text-gray-500">Sign In</button>
+            </div>
+            <div class="p-8">
+                <div id="signup-form">
+                    <input id="signup-name" type="text" placeholder="Full Name" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-4">
+                    <input id="signup-email" type="email" placeholder="Email" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-4">
+                    <input id="signup-password" type="password" placeholder="Password (min 6)" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-6">
+                    <button onclick="signUp()" class="w-full bg-green-700 text-white py-4 rounded-2xl font-bold text-lg">Create Farmer Account</button>
+                </div>
+                <div id="signin-form" class="hidden">
+                    <input id="signin-email" type="email" placeholder="Email" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-4">
+                    <input id="signin-password" type="password" placeholder="Password" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-6">
+                    <button onclick="signIn()" class="w-full bg-green-700 text-white py-4 rounded-2xl font-bold text-lg">Login to Marketplace</button>
+                </div>
+            </div>
+            <div class="px-8 pb-8 text-center text-sm text-gray-500">
+                <button onclick="closeAuthModal()" class="underline">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST (exactly same) -->
+    <div id="toast" class="hidden fixed bottom-8 right-8 bg-green-700 text-white px-8 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
+        <span id="toast-text"></span>
+    </div>
+
+    <footer class="bg-white border-t py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
+            © 2026 AgriConnect South Africa • Powered by Firebase Realtime Database
+        </div>
+    </footer>
+
+    <!-- FIREBASE SDKs (exactly same) -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+
+    <script>
+        // ==================== FIREBASE CONFIG ====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQZFUK4hnd-_lHUCfi_EHZ1gMM7p1rurE",
+            authDomain: "agriconnect-a813a.firebaseapp.com",
+            projectId: "agriconnect-a813a",
+            storageBucket: "agriconnect-a813a.firebasestorage.app",
+            messagingSenderId: "426251328870",
+            appId: "1:426251328870:web:742e51f276a1206d10fca7",
+            measurementId: "G-LERNRKQ4S7"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        let currentUser = null;
+
+        // ==================== AUTH STATE ====================
+        auth.onAuthStateChanged(user => {
+            currentUser = user;
+            const greeting = document.getElementById('user-greeting');
+            const authBtn = document.getElementById('auth-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+
+            if (user) {
+                greeting.textContent = `Hi, ${user.displayName || 'Farmer'}!`;
+                greeting.classList.remove('hidden');
+                authBtn.classList.add('hidden');
+                logoutBtn.classList.remove('hidden');
+                loadMyApplications();
+            } else {
+                greeting.classList.add('hidden');
+                authBtn.classList.remove('hidden');
+                logoutBtn.classList.add('hidden');
+            }
+        });
+
+        // ==================== AUTH MODAL (exactly same) ====================
+        function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); switchAuthTab(0); }
+        function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
+        function switchAuthTab(n) {
+            document.getElementById('signup-form').classList.toggle('hidden', n === 1);
+            document.getElementById('signin-form').classList.toggle('hidden', n === 0);
+            document.getElementById('tab-signup').classList.toggle('border-b-2', n === 0);
+            document.getElementById('tab-signup').classList.toggle('text-green-700', n === 0);
+            document.getElementById('tab-signin').classList.toggle('border-b-2', n === 1);
+            document.getElementById('tab-signin').classList.toggle('text-green-700', n === 1);
+        }
+
+        async function signUp() {
+            const name = document.getElementById('signup-name').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const pass = document.getElementById('signup-password').value;
+            if (!email || !pass || pass.length < 6) return showToast("Check your details", true);
+            try {
+                const cred = await auth.createUserWithEmailAndPassword(email, pass);
+                await cred.user.updateProfile({ displayName: name });
+                await db.ref('users/' + cred.user.uid).set({ name, email, joined: Date.now() });
+                showToast(`Welcome ${name}!`);
+                closeAuthModal();
+            } catch (e) { showToast(e.message, true); }
+        }
+
+        async function signIn() {
+            const email = document.getElementById('signin-email').value;
+            const pass = document.getElementById('signin-password').value;
+            try {
+                await auth.signInWithEmailAndPassword(email, pass);
+                showToast("Logged in successfully!");
+                closeAuthModal();
+            } catch (e) { showToast(e.message, true); }
+        }
+
+        function logout() {
+            auth.signOut();
+            showToast("Logged out");
+        }
+
+        // ==================== FINANCING FEATURES ====================
+        function loadLoanOptions() {
+            const loans = [
+                { title: "Seeds & Fertilizer", amount: "R15,000", rate: "8.5%", period: "6 months" },
+                { title: "Tractor Loan", amount: "R85,000", rate: "7.2%", period: "24 months" },
+                { title: "Irrigation System", amount: "R28,000", rate: "9.0%", period: "12 months" }
+            ];
+            const grid = document.getElementById('loans-grid');
+            grid.innerHTML = loans.map(l => `
+                <div class="loan-card bg-white border border-gray-100 rounded-3xl p-6">
+                    <h4 class="font-bold text-xl">${l.title}</h4>
+                    <div class="my-6">
+                        <p class="text-4xl font-bold text-green-700">${l.amount}</p>
+                        <p class="text-sm text-gray-500">${l.period} • ${l.rate} p.a.</p>
+                    </div>
+                    <button onclick="quickApply('${l.title}')" class="w-full py-3 border border-green-700 text-green-700 rounded-2xl font-semibold hover:bg-green-50">Apply Now</button>
+                </div>
+            `).join('');
+        }
+
+        async function quickApply(title) {
+            if (!currentUser) return alert("Please login first");
+            const amount = prompt("Enter amount needed (R) for " + title, "15000");
+            if (!amount) return;
+            const ref = db.ref('applications/' + currentUser.uid).push();
+            await ref.set({
+                type: title,
+                amount: parseFloat(amount),
+                status: "Pending",
+                date: Date.now()
+            });
+            showToast(`✅ Application for ${title} submitted!`);
+            loadMyApplications();
+        }
+
+        async function applyForLoan() {
+            if (!currentUser) return showToast("Please login first", true);
+            const amount = parseFloat(document.getElementById('loan-amount').value);
+            const type = document.getElementById('loan-type').value;
+            const purpose = document.getElementById('loan-purpose').value;
+            if (!amount || !type) return showToast("Please fill amount and type", true);
+
+            const ref = db.ref('applications/' + currentUser.uid).push();
+            await ref.set({
+                type: type,
+                amount: amount,
+                purpose: purpose || "General farm inputs",
+                status: "Pending",
+                date: Date.now()
+            });
+
+            showToast("✅ Financing application submitted successfully!");
+            document.getElementById('loan-amount').value = '';
+            document.getElementById('loan-type').value = '';
+            document.getElementById('loan-purpose').value = '';
+            loadMyApplications();
+        }
+
+        function loadMyApplications() {
+            if (!currentUser) return;
+            const container = document.getElementById('my-applications');
+            db.ref('applications/' + currentUser.uid).limitToLast(10).on('value', snap => {
+                container.innerHTML = '';
+                if (!snap.exists()) {
+                    container.innerHTML = `<p class="text-gray-400 italic">No applications yet. Apply above!</p>`;
+                    return;
+                }
+                snap.forEach(child => {
+                    const app = child.val();
+                    container.innerHTML += `
+                        <div class="bg-gray-50 p-5 rounded-2xl">
+                            <div class="flex justify-between">
+                                <span class="font-medium">${app.type}</span>
+                                <span class="text-green-600 font-bold">R${app.amount}</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">${new Date(app.date).toLocaleDateString()} • ${app.status}</p>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        function showToast(msg, error = false) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').innerHTML = msg;
+            toast.style.backgroundColor = error ? '#dc2626' : '#15803d';
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 4000);
+        }
+
+        // ==================== INIT ====================
+        window.onload = () => {
+            loadLoanOptions();
+            console.log("%c✅ AgriConnect Financing page is LIVE with Firebase Realtime Database", "color:#166534;font-size:15px;font-weight:bold");
+        };
+    </script>
+</body>
+</html>
