@@ -28,9 +28,9 @@
                     <span class="text-2xl font-bold text-green-800 tracking-tight">AgriConnect</span>
                 </div>
                 <div class="hidden md:flex space-x-8 font-medium">
-                    <a href="marketplace.html" onclick="scrollToSection('market')" class="hover:text-green-600 transition">Marketplace</a>
-                    <a href="advisory.html" onclick="scrollToSection('advisory')" class="hover:text-green-600 transition">Advisory</a>
-                    <a href="finance.html" onclick="scrollToSection('finance')" class="hover:text-green-600 transition">Financing</a>
+                    <a href="#market" onclick="scrollToSection('market')" class="hover:text-green-600 transition">Marketplace</a>
+                    <a href="#advisory" onclick="scrollToSection('advisory')" class="hover:text-green-600 transition">Advisory</a>
+                    <a href="#finance" onclick="scrollToSection('finance')" class="hover:text-green-600 transition">Financing</a>
                 </div>
                 
                 <div class="flex items-center gap-4">
@@ -145,7 +145,6 @@
                     <p class="text-green-600">for Seeds & Fertilizer</p>
                     <button onclick="alert('Application submitted! (Demo)')" class="mt-8 w-full py-4 bg-green-700 text-white rounded-2xl font-semibold">Apply Now</button>
                 </div>
-                <!-- more cards... -->
             </div>
         </div>
     </section>
@@ -199,9 +198,77 @@
         <span id="toast-text"></span>
     </div>
 
-    <footer class="bg-white border-t py-12">
-        <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
-            © 2026 AgriConnect South Africa • Powered by Firebase Realtime Database
+    <!-- PROFESSIONAL FOOTER -->
+    <footer class="bg-gray-900 text-gray-300 py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-5">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="bg-green-600 p-3 rounded-2xl">
+                            <i class="fas fa-seedling text-3xl text-white"></i>
+                        </div>
+                        <span class="text-3xl font-bold tracking-tighter">AgriConnect</span>
+                    </div>
+                    <p class="text-gray-400 max-w-md leading-relaxed">
+                        Empowering South African smallholder farmers with direct market access, 
+                        smart advisory, and fair financing. Growing together since 2026.
+                    </p>
+                    <div class="flex gap-6 mt-10 text-xl">
+                        <a href="#" class="hover:text-green-400 transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="hover:text-green-400 transition"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" class="hover:text-green-400 transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="hover:text-green-400 transition"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="hover:text-green-400 transition"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="lg:col-span-2">
+                    <h4 class="font-semibold text-white text-lg mb-6">Platform</h4>
+                    <ul class="space-y-4">
+                        <li><a href="index.html" class="hover:text-white transition">Home</a></li>
+                        <li><a href="marketplace.html" class="hover:text-white transition">Marketplace</a></li>
+                        <li><a href="advisory.html" class="hover:text-white transition">Advisory</a></li>
+                        <li><a href="financing.html" class="hover:text-white transition">Financing</a></li>
+                    </ul>
+                </div>
+                <div class="lg:col-span-2">
+                    <h4 class="font-semibold text-white text-lg mb-6">Company</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition">Our Farmers</a></li>
+                        <li><a href="#" class="hover:text-white transition">Impact Stories</a></li>
+                        <li><a href="#" class="hover:text-white transition">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="lg:col-span-3">
+                    <h4 class="font-semibold text-white text-lg mb-6">Get in Touch</h4>
+                    <div class="space-y-4 text-sm">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-envelope mt-1"></i>
+                            <div>
+                                <div>info@agriconnect.co.za</div>
+                                <div class="text-xs text-gray-500">Support available 7 days a week</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-phone mt-1"></i>
+                            <div>+27 67 890 1234</div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt mt-1"></i>
+                            <div>Johannesburg, Gauteng<br>South Africa</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+                <div>© 2026 AgriConnect South Africa. All Rights Reserved.</div>
+                <div class="flex gap-8">
+                    <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition">Farmer Safety</a>
+                </div>
+                <div class="text-green-400">🌱 Powered by Firebase Realtime Database</div>
+            </div>
         </div>
     </footer>
 
