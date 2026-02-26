@@ -17,7 +17,7 @@
 </head>
 <body class="bg-gray-50 text-gray-900">
 
-    <!-- NAV -->
+    <!-- NAV (exactly same structure as marketplace.html and advisory.html) -->
     <nav class="sticky top-0 z-50 glass border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
@@ -59,6 +59,8 @@
     <!-- FINANCING CONTENT -->
     <section class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-3 gap-8">
+
+            <!-- AVAILABLE LOANS -->
             <div class="lg:col-span-2 space-y-8">
                 <div class="bg-white rounded-3xl p-8 border border-gray-100">
                     <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
@@ -68,6 +70,8 @@
                         <!-- Populated by JS -->
                     </div>
                 </div>
+
+                <!-- APPLY FORM -->
                 <div class="bg-white rounded-3xl p-8 border border-gray-100">
                     <h2 class="text-3xl font-bold mb-6">Apply for Financing</h2>
                     <div class="grid grid-cols-2 gap-4">
@@ -84,7 +88,10 @@
                     <button onclick="applyForLoan()" class="mt-8 w-full py-4 bg-green-700 hover:bg-green-800 text-white rounded-3xl font-semibold text-lg">Submit Application</button>
                 </div>
             </div>
+
+            <!-- SIDE PANEL -->
             <div class="space-y-8">
+                <!-- MY APPLICATIONS -->
                 <div class="bg-white rounded-3xl p-8 border border-gray-100">
                     <h3 class="font-bold text-xl mb-6 flex items-center gap-3">
                         <i class="fas fa-file-invoice text-green-600"></i> My Applications
@@ -93,6 +100,8 @@
                         <!-- Populated from Firebase -->
                     </div>
                 </div>
+
+                <!-- QUICK FACTS -->
                 <div class="bg-white rounded-3xl p-8 border border-gray-100">
                     <h3 class="font-bold text-xl mb-6">Why Farmers Choose Us</h3>
                     <div class="space-y-6">
@@ -151,6 +160,8 @@
     <footer class="bg-gray-900 text-gray-300 py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12">
+                
+                <!-- Logo & About -->
                 <div class="lg:col-span-5">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="bg-green-600 p-3 rounded-2xl">
@@ -162,6 +173,8 @@
                         Empowering South African smallholder farmers with direct market access, 
                         smart advisory, and fair financing. Growing together since 2026.
                     </p>
+                    
+                    <!-- Social Icons -->
                     <div class="flex gap-6 mt-10 text-xl">
                         <a href="#" class="hover:text-green-400 transition"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="hover:text-green-400 transition"><i class="fab fa-x-twitter"></i></a>
@@ -170,6 +183,8 @@
                         <a href="#" class="hover:text-green-400 transition"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
+
+                <!-- Quick Links -->
                 <div class="lg:col-span-2">
                     <h4 class="font-semibold text-white text-lg mb-6">Platform</h4>
                     <ul class="space-y-4">
@@ -179,6 +194,7 @@
                         <li><a href="financing.html" class="hover:text-white transition">Financing</a></li>
                     </ul>
                 </div>
+
                 <div class="lg:col-span-2">
                     <h4 class="font-semibold text-white text-lg mb-6">Company</h4>
                     <ul class="space-y-4">
@@ -188,6 +204,8 @@
                         <li><a href="#" class="hover:text-white transition">Careers</a></li>
                     </ul>
                 </div>
+
+                <!-- Contact -->
                 <div class="lg:col-span-3">
                     <h4 class="font-semibold text-white text-lg mb-6">Get in Touch</h4>
                     <div class="space-y-4 text-sm">
@@ -209,6 +227,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Bottom Bar -->
             <div class="mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
                 <div>© 2026 AgriConnect South Africa. All Rights Reserved.</div>
                 <div class="flex gap-8">
@@ -256,7 +276,7 @@
                 greeting.classList.remove('hidden');
                 authBtn.classList.add('hidden');
                 logoutBtn.classList.remove('hidden');
-                loadMyApplications();
+                loadUserAdvice();
             } else {
                 greeting.classList.add('hidden');
                 authBtn.classList.remove('hidden');
@@ -305,82 +325,80 @@
             showToast("Logged out");
         }
 
-        // ==================== FINANCING FEATURES ====================
-        function loadLoanOptions() {
-            const loans = [
-                { title: "Seeds & Fertilizer", amount: "R15,000", rate: "8.5%", period: "6 months" },
-                { title: "Tractor Loan", amount: "R85,000", rate: "7.2%", period: "24 months" },
-                { title: "Irrigation System", amount: "R28,000", rate: "9.0%", period: "12 months" }
+        // ==================== ADVISORY FEATURES ====================
+        function loadInsights() {
+            const insights = [
+                { icon: "🌱", title: "Soil Moisture", value: "68%", status: "Optimal", color: "text-green-600" },
+                { icon: "🐛", title: "Pest Risk", value: "Low", status: "No action needed", color: "text-green-600" },
+                { icon: "🌡️", title: "Temperature", value: "24°C", status: "Perfect for growth", color: "text-orange-500" }
             ];
-            const grid = document.getElementById('loans-grid');
-            grid.innerHTML = loans.map(l => `
-                <div class="loan-card bg-white border border-gray-100 rounded-3xl p-6">
-                    <h4 class="font-bold text-xl">${l.title}</h4>
-                    <div class="my-6">
-                        <p class="text-4xl font-bold text-green-700">${l.amount}</p>
-                        <p class="text-sm text-gray-500">${l.period} • ${l.rate} p.a.</p>
-                    </div>
-                    <button onclick="quickApply('${l.title}')" class="w-full py-3 border border-green-700 text-green-700 rounded-2xl font-semibold hover:bg-green-50">Apply Now</button>
+            const grid = document.getElementById('insights-grid');
+            grid.innerHTML = insights.map(i => `
+                <div class="insight-card bg-gray-50 rounded-2xl p-6">
+                    <div class="text-4xl mb-3">${i.icon}</div>
+                    <p class="text-sm text-gray-500">${i.title}</p>
+                    <p class="text-4xl font-bold ${i.color}">${i.value}</p>
+                    <p class="text-sm mt-1">${i.status}</p>
                 </div>
             `).join('');
         }
 
-        async function quickApply(title) {
-            if (!currentUser) return alert("Please login first");
-            const amount = prompt("Enter amount needed (R) for " + title, "15000");
-            if (!amount) return;
-            const ref = db.ref('applications/' + currentUser.uid).push();
-            await ref.set({
-                type: title,
-                amount: parseFloat(amount),
-                status: "Pending",
-                date: Date.now()
-            });
-            showToast(`✅ Application for ${title} submitted!`);
-            loadMyApplications();
+        function loadRecommendations() {
+            const recs = document.getElementById('recommendations');
+            recs.innerHTML = `
+                <div class="bg-green-50 border border-green-100 p-6 rounded-2xl">
+                    <p class="font-semibold">Start Nitrogen application tomorrow morning</p>
+                    <p class="text-sm text-gray-600 mt-1">Rain expected in 48 hrs — ideal window</p>
+                </div>
+                <div class="bg-yellow-50 border border-yellow-100 p-6 rounded-2xl">
+                    <p class="font-semibold">Monitor for Fall Armyworm in maize fields</p>
+                    <p class="text-sm text-gray-600 mt-1">Low risk but increasing</p>
+                </div>
+            `;
         }
 
-        async function applyForLoan() {
+        function loadWeather() {
+            const panel = document.getElementById('weather-panel');
+            panel.innerHTML = `
+                <div class="flex justify-between"><span>Today</span><span class="font-semibold">26°C • Sunny</span></div>
+                <div class="flex justify-between"><span>Tomorrow</span><span class="font-semibold">28°C • 40% Rain</span></div>
+                <div class="flex justify-between"><span>Wed</span><span class="font-semibold">24°C • Cloudy</span></div>
+            `;
+        }
+
+        async function getAIAdvice() {
+            const query = document.getElementById('advice-query').value.trim();
+            if (!query) return showToast("Ask a question!", true);
             if (!currentUser) return showToast("Please login first", true);
-            const amount = parseFloat(document.getElementById('loan-amount').value);
-            const type = document.getElementById('loan-type').value;
-            const purpose = document.getElementById('loan-purpose').value;
-            if (!amount || !type) return showToast("Please fill amount and type", true);
 
-            const ref = db.ref('applications/' + currentUser.uid).push();
-            await ref.set({
-                type: type,
-                amount: amount,
-                purpose: purpose || "General farm inputs",
-                status: "Pending",
-                date: Date.now()
+            const adviceRef = db.ref('advice/' + currentUser.uid).push();
+            await adviceRef.set({
+                query: query,
+                response: "Based on current conditions in your area, plant in 3 days after light rain. Expected yield boost: +18%.",
+                timestamp: Date.now()
             });
 
-            showToast("✅ Financing application submitted successfully!");
-            document.getElementById('loan-amount').value = '';
-            document.getElementById('loan-type').value = '';
-            document.getElementById('loan-purpose').value = '';
-            loadMyApplications();
+            showToast("✅ Advice saved & displayed below!");
+            loadUserAdvice();
+            document.getElementById('advice-query').value = '';
         }
 
-        function loadMyApplications() {
+        function loadUserAdvice() {
             if (!currentUser) return;
-            const container = document.getElementById('my-applications');
-            db.ref('applications/' + currentUser.uid).limitToLast(10).on('value', snap => {
+            const container = document.getElementById('saved-advice');
+            db.ref('advice/' + currentUser.uid).limitToLast(5).on('value', snap => {
                 container.innerHTML = '';
                 if (!snap.exists()) {
-                    container.innerHTML = `<p class="text-gray-400 italic">No applications yet. Apply above!</p>`;
+                    container.innerHTML = `<p class="text-gray-400 italic">No saved advice yet. Ask a question above!</p>`;
                     return;
                 }
                 snap.forEach(child => {
-                    const app = child.val();
+                    const a = child.val();
                     container.innerHTML += `
-                        <div class="bg-gray-50 p-5 rounded-2xl">
-                            <div class="flex justify-between">
-                                <span class="font-medium">${app.type}</span>
-                                <span class="text-green-600 font-bold">R${app.amount}</span>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-1">${new Date(app.date).toLocaleDateString()} • ${app.status}</p>
+                        <div class="bg-gray-50 p-4 rounded-2xl">
+                            <p class="text-xs text-gray-500">${new Date(a.timestamp).toLocaleDateString()}</p>
+                            <p class="font-medium mt-1">"${a.query}"</p>
+                            <p class="text-green-700 text-sm mt-2">${a.response}</p>
                         </div>
                     `;
                 });
@@ -397,8 +415,10 @@
 
         // ==================== INIT ====================
         window.onload = () => {
-            loadLoanOptions();
-            console.log("%c✅ AgriConnect Financing page is LIVE with Firebase Realtime Database", "color:#166534;font-size:15px;font-weight:bold");
+            loadInsights();
+            loadRecommendations();
+            loadWeather();
+            console.log("%c✅ AgriConnect Advisory page is LIVE with Firebase Realtime Database", "color:#166534;font-size:15px;font-weight:bold");
         };
     </script>
 </body>
