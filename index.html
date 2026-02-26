@@ -3,286 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriConnect | Empowering Emerging Farmers</title>
+    <title>Admin • AgriConnect</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .hero-gradient { background: linear-gradient(135deg, #166534 0%, #15803d 100%); }
-        .listing-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .listing-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
+        .glass { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); }
+        .sidebar-link { transition: all 0.2s; }
+        .sidebar-link:hover { background: rgba(16, 185, 129, 0.15); }
+        .sidebar-link-active { background: #10b981; color: white; }
+        .stat-card { transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-4px); }
+        table { border-collapse: separate; border-spacing: 0 8px; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
-
-    <!-- NAV -->
-    <nav class="sticky top-0 z-50 glass border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center space-x-2">
-                    <div class="bg-green-600 p-2 rounded-lg">
-                        <i class="fas fa-seedling text-white text-xl"></i>
-                    </div>
-                    <span class="text-2xl font-bold text-green-800 tracking-tight">AgriConnect</span>
+<body class="bg-gray-950 text-gray-200 min-h-screen">
+    <div class="flex h-screen">
+        <!-- SIDEBAR -->
+        <div class="w-72 bg-gray-900 border-r border-gray-800 flex flex-col">
+            <div class="p-6 border-b border-gray-800 flex items-center gap-3">
+                <div class="bg-green-600 w-9 h-9 rounded-2xl flex items-center justify-center">
+                    <i class="fas fa-seedling text-white text-2xl"></i>
                 </div>
-                <div class="hidden md:flex space-x-8 font-medium">
-                    <a href="index.html" class="text-green-700 font-semibold border-b-2 border-green-700 pb-1">Home</a>
-                    <a href="marketplace.html" class="hover:text-green-600 transition">Marketplace</a>
-                    <a href="advisory.html" class="hover:text-green-600 transition">Advisory</a>
-                    <a href="financing.html" class="hover:text-green-600 transition">Financing</a>
-                </div>
-                
-                <div class="flex items-center gap-4">
-                    <span id="user-greeting" class="hidden text-sm font-medium text-green-700"></span>
-                    <button id="auth-btn" onclick="openAuthModal()"
-                        class="bg-green-700 text-white px-6 py-2 rounded-full font-semibold hover:bg-green-800 transition shadow-lg">
-                        Get Started
-                    </button>
-                    <button id="logout-btn" onclick="logout()" class="hidden bg-red-100 text-red-700 px-5 py-2 rounded-full font-semibold hover:bg-red-200 transition">
-                        Logout
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- HERO -->
-    <header class="hero-gradient text-white py-20 px-4">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-            <div>
-                <span class="bg-green-500/30 text-green-100 px-4 py-1 rounded-full text-sm font-semibold uppercase tracking-wider">South African Farmers • Real-time Market</span>
-                <h1 class="text-5xl md:text-6xl font-extrabold mt-6 leading-tight">
-                    From Soil to Shelf, <br><span class="text-green-300">Instantly Connected.</span>
-                </h1>
-                <p class="mt-6 text-lg text-green-50/90 leading-relaxed">
-                    Direct marketplace • AI advisory • Input financing. All powered by Firebase Realtime Database.
-                </p>
-                <div class="mt-10 flex flex-col sm:flex-row gap-4">
-                    <button onclick="openAuthModal()" class="bg-white text-green-800 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-100 transition shadow-xl">
-                        Start Selling Today
-                    </button>
-                    <button onclick="scrollToSection('market')" class="border-2 border-white/70 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/10 transition">
-                        Browse Produce
-                    </button>
-                </div>
-            </div>
-            <div class="relative">
-                <img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&q=80&w=800" alt="Farmer" class="rounded-3xl shadow-2xl">
-                <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-2xl border border-gray-100">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-green-100 p-3 rounded-xl"><i class="fas fa-truck text-green-600 text-2xl"></i></div>
-                        <div>
-                            <p class="text-xs uppercase font-bold text-gray-500">Live Today</p>
-                            <p class="text-2xl font-bold text-gray-900">127 tons sold</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- MARKETPLACE SECTION (fully functional) -->
-    <section id="market" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-end mb-12">
                 <div>
-                    <h2 class="text-4xl font-bold">Live Marketplace</h2>
-                    <p class="text-gray-600 mt-2">Real-time listings • Powered by Firebase Realtime Database</p>
-                </div>
-                <div class="flex gap-3">
-                    <input id="search-input" type="text" placeholder="Search maize, tomatoes..." 
-                           class="px-5 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-green-600 w-72"
-                           onkeyup="filterListings()">
-                    <button onclick="openPostModal()" id="post-produce-btn"
-                            class="hidden bg-green-700 text-white px-8 py-3 rounded-2xl font-semibold hover:bg-green-800">
-                        <i class="fas fa-plus mr-2"></i> Post Produce
-                    </button>
+                    <span class="text-2xl font-bold tracking-tighter text-white">AgriConnect</span>
+                    <p class="text-[10px] text-green-400 -mt-1 font-mono">ADMIN PANEL</p>
                 </div>
             </div>
 
-            <!-- Listings Grid -->
-            <div id="listings-grid" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <!-- Populated by JavaScript in realtime -->
+            <div class="flex-1 py-8 px-4">
+                <nav class="space-y-1">
+                    <a onclick="showSection('overview')" id="nav-overview" 
+                       class="sidebar-link sidebar-link-active flex items-center gap-3 px-6 py-3.5 rounded-2xl text-sm font-medium cursor-pointer">
+                        <i class="fas fa-tachometer-alt w-5"></i>
+                        <span>Overview</span>
+                    </a>
+                    <a onclick="showSection('users')" id="nav-users"
+                       class="sidebar-link flex items-center gap-3 px-6 py-3.5 rounded-2xl text-sm font-medium cursor-pointer">
+                        <i class="fas fa-users w-5"></i>
+                        <span>Farmers</span>
+                    </a>
+                    <a onclick="showSection('listings')" id="nav-listings"
+                       class="sidebar-link flex items-center gap-3 px-6 py-3.5 rounded-2xl text-sm font-medium cursor-pointer">
+                        <i class="fas fa-store w-5"></i>
+                        <span>Listings</span>
+                    </a>
+                    <a onclick="showSection('analytics')" id="nav-analytics"
+                       class="sidebar-link flex items-center gap-3 px-6 py-3.5 rounded-2xl text-sm font-medium cursor-pointer">
+                        <i class="fas fa-chart-line w-5"></i>
+                        <span>Analytics</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="p-6 border-t border-gray-800">
+                <div id="admin-info" class="flex items-center gap-3 px-4 py-3 bg-gray-800 rounded-2xl">
+                    <div class="w-9 h-9 bg-green-500 rounded-2xl flex items-center justify-center text-white font-bold">A</div>
+                    <div class="flex-1">
+                        <p class="font-semibold text-sm" id="admin-name">Admin</p>
+                        <p class="text-green-400 text-xs" id="admin-email"></p>
+                    </div>
+                </div>
+                <button onclick="logout()" 
+                        class="mt-6 w-full flex items-center justify-center gap-2 bg-red-600/10 hover:bg-red-600/20 text-red-400 py-3 rounded-2xl font-medium transition">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
             </div>
         </div>
-    </section>
 
-    <!-- ADVISORY -->
-    <section id="advisory" class="bg-gray-900 py-24 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-16 items-center">
-            <div>
-                <h2 class="text-4xl font-bold mb-6">Smart Farming Dashboard</h2>
-                <p class="text-gray-400 text-lg">Hyper-local AI advice delivered instantly. Works offline.</p>
-                <div class="mt-10 space-y-6">
-                    <div class="flex gap-6 bg-gray-800/50 p-6 rounded-3xl">
-                        <i class="fas fa-cloud-sun-rain text-5xl text-yellow-400"></i>
-                        <div>
-                            <p class="font-semibold">Tomorrow's Rain Chance</p>
-                            <p class="text-3xl font-bold text-green-400">85%</p>
-                            <p class="text-sm text-gray-400">Perfect window for planting</p>
+        <!-- MAIN CONTENT -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- TOP BAR -->
+            <div class="h-16 bg-gray-900 border-b border-gray-800 px-8 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <h1 id="page-title" class="text-2xl font-semibold text-white">Overview</h1>
+                    <div id="live-dot" class="flex items-center gap-1.5 text-xs bg-green-900 text-green-400 px-3 py-1 rounded-full">
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        LIVE
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-6 text-sm">
+                    <div class="flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-3xl">
+                        <i class="fas fa-calendar text-green-400"></i>
+                        <span id="current-date" class="font-medium"></span>
+                    </div>
+                    <div onclick="refreshAll()" class="cursor-pointer hover:text-green-400 transition flex items-center gap-2">
+                        <i class="fas fa-sync-alt"></i>
+                        <span class="text-xs font-medium">REFRESH</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTENT AREA -->
+            <div class="flex-1 overflow-auto p-8">
+                
+                <!-- OVERVIEW SECTION -->
+                <div id="section-overview" class="space-y-8">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <!-- Stat 1 -->
+                        <div class="stat-card bg-gray-900 border border-green-500/20 rounded-3xl p-6">
+                            <div class="flex justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-400 font-medium tracking-widest">TOTAL FARMERS</p>
+                                    <p id="stat-users" class="text-5xl font-bold text-white mt-3">248</p>
+                                </div>
+                                <div class="w-12 h-12 bg-green-500/10 rounded-2xl flex items-center justify-center text-3xl">👨‍🌾</div>
+                            </div>
+                            <p class="text-green-400 text-sm mt-6 flex items-center gap-1">
+                                <i class="fas fa-arrow-up"></i> +12 this week
+                            </p>
+                        </div>
+                        
+                        <!-- Stat 2 -->
+                        <div class="stat-card bg-gray-900 border border-green-500/20 rounded-3xl p-6">
+                            <div class="flex justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-400 font-medium tracking-widest">LIVE LISTINGS</p>
+                                    <p id="stat-listings" class="text-5xl font-bold text-white mt-3">87</p>
+                                </div>
+                                <div class="w-12 h-12 bg-amber-500/10 rounded-2xl flex items-center justify-center text-3xl">🌽</div>
+                            </div>
+                            <p class="text-green-400 text-sm mt-6 flex items-center gap-1">
+                                <i class="fas fa-arrow-up"></i> +7 today
+                            </p>
+                        </div>
+                        
+                        <!-- Stat 3 -->
+                        <div class="stat-card bg-gray-900 border border-green-500/20 rounded-3xl p-6">
+                            <div class="flex justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-400 font-medium tracking-widest">TONS LISTED</p>
+                                    <p id="stat-tons" class="text-5xl font-bold text-white mt-3">1,642</p>
+                                </div>
+                                <div class="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-3xl">📦</div>
+                            </div>
+                            <p class="text-green-400 text-sm mt-6">Across all produce</p>
+                        </div>
+                        
+                        <!-- Stat 4 -->
+                        <div class="stat-card bg-gray-900 border border-green-500/20 rounded-3xl p-6">
+                            <div class="flex justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-400 font-medium tracking-widest">EST. VALUE</p>
+                                    <p id="stat-value" class="text-5xl font-bold text-white mt-3">R4.8m</p>
+                                </div>
+                                <div class="w-12 h-12 bg-purple-500/10 rounded-2xl flex items-center justify-center text-3xl">💰</div>
+                            </div>
+                            <p class="text-green-400 text-sm mt-6">Marketplace value</p>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="bg-gray-900 rounded-3xl p-8">
+                        <div class="flex justify-between mb-6">
+                            <h2 class="text-lg font-semibold">Recent Listings</h2>
+                            <button onclick="showSection('listings')" 
+                                    class="text-green-400 text-sm flex items-center gap-2 hover:underline">
+                                View all <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        <div id="recent-listings" class="space-y-3 text-sm">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- USERS SECTION -->
+                <div id="section-users" class="hidden">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-2xl font-semibold">Registered Farmers</h2>
+                        <div class="relative w-80">
+                            <input id="user-search" type="text" placeholder="Search farmers..." 
+                                   onkeyup="filterUsers()" 
+                                   class="w-full bg-gray-800 border border-gray-700 focus:border-green-500 rounded-3xl py-3 px-5 pl-12 text-sm outline-none">
+                            <i class="fas fa-search absolute left-5 top-3.5 text-gray-500"></i>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 rounded-3xl overflow-hidden">
+                        <table class="w-full">
+                            <thead class="bg-gray-800">
+                                <tr>
+                                    <th class="px-8 py-5 text-left text-xs font-medium text-gray-400">NAME</th>
+                                    <th class="px-8 py-5 text-left text-xs font-medium text-gray-400">EMAIL</th>
+                                    <th class="px-8 py-5 text-left text-xs font-medium text-gray-400">JOINED</th>
+                                    <th class="px-8 py-5 text-center text-xs font-medium text-gray-400">ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table" class="divide-y divide-gray-800">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- LISTINGS SECTION -->
+                <div id="section-listings" class="hidden">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-2xl font-semibold">All Marketplace Listings</h2>
+                        <div class="flex gap-3">
+                            <input id="listing-search" type="text" placeholder="Search listings..." 
+                                   onkeyup="filterListings()" 
+                                   class="bg-gray-800 border border-gray-700 focus:border-green-500 rounded-3xl py-3 px-5 pl-12 text-sm outline-none w-80">
+                            <button onclick="refreshListings()" 
+                                    class="px-6 bg-green-600 hover:bg-green-500 transition text-white rounded-3xl flex items-center gap-2">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 rounded-3xl overflow-hidden">
+                        <table class="w-full">
+                            <thead class="bg-gray-800">
+                                <tr>
+                                    <th class="px-8 py-5 text-left text-xs font-medium text-gray-400">PRODUCE</th>
+                                    <th class="px-8 py-5 text-left text-xs font-medium text-gray-400">PRICE / TON</th>
+                                    <th class="px-8 py-5 text-left text-xs font-medium text-gray-400">QTY</th>
+                                    <th class="px-8 py-5 text-left text-xs font-medium text-gray-400">LOCATION</th>
+                                    <th class="px-8 py-5 text-left text-xs font-medium text-gray-400">SELLER</th>
+                                    <th class="px-8 py-5 text-center text-xs font-medium text-gray-400">ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listings-table" class="divide-y divide-gray-800">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ANALYTICS SECTION -->
+                <div id="section-analytics" class="hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-gray-900 rounded-3xl p-8">
+                            <h3 class="font-semibold mb-6">Listings Growth (Last 30 Days)</h3>
+                            <canvas id="growthChart" height="120"></canvas>
+                        </div>
+                        <div class="bg-gray-900 rounded-3xl p-8">
+                            <h3 class="font-semibold mb-6">Produce Distribution</h3>
+                            <canvas id="produceChart" height="120"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="bg-gray-800 rounded-3xl p-8 border border-green-500/30">
-                <div class="text-center py-8">
-                    <div class="text-6xl mb-4">🌾</div>
-                    <p class="font-mono text-green-400">SOIL MOISTURE: 68% — OPTIMAL</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- FINANCING -->
-    <section id="finance" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-4xl font-bold mb-4">Input Financing</h2>
-            <p class="max-w-md mx-auto text-gray-600">Get instant credit offers based on your harvest history.</p>
-            <div class="mt-16 grid md:grid-cols-3 gap-8">
-                <div class="border border-gray-200 p-8 rounded-3xl hover:border-green-300 transition">
-                    <h3 class="font-bold text-xl mb-2">R12,000</h3>
-                    <p class="text-green-600">for Seeds & Fertilizer</p>
-                    <button onclick="alert('Application submitted! (Demo)')" class="mt-8 w-full py-4 bg-green-700 text-white rounded-2xl font-semibold">Apply Now</button>
-                </div>
+            <!-- FOOTER BAR -->
+            <div class="h-14 bg-gray-900 border-t border-gray-800 flex items-center px-8 text-xs text-gray-500">
+                <div>AgriConnect Admin • Firebase Realtime Database • Johannesburg, ZA</div>
+                <div class="flex-1"></div>
+                <div id="last-updated" class="font-mono">Last updated just now</div>
             </div>
-        </div>
-    </section>
-
-    <!-- AUTH MODAL -->
-    <div id="authModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[200]">
-        <div class="bg-white rounded-3xl w-full max-w-md mx-4 shadow-2xl">
-            <div class="flex border-b">
-                <button onclick="switchAuthTab(0)" id="tab-signup" class="flex-1 py-5 font-semibold text-green-700 border-b-2 border-green-700">Sign Up</button>
-                <button onclick="switchAuthTab(1)" id="tab-signin" class="flex-1 py-5 font-semibold text-gray-500">Sign In</button>
-            </div>
-            
-            <div class="p-8">
-                <div id="signup-form">
-                    <input id="signup-name" type="text" placeholder="Full Name" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-4 focus:outline-none focus:border-green-600">
-                    <input id="signup-email" type="email" placeholder="Email" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-4 focus:outline-none focus:border-green-600">
-                    <input id="signup-password" type="password" placeholder="Password (min 6)" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-6 focus:outline-none focus:border-green-600">
-                    <button onclick="signUp()" class="w-full bg-green-700 text-white py-4 rounded-2xl font-bold text-lg">Create Farmer Account</button>
-                </div>
-                
-                <div id="signin-form" class="hidden">
-                    <input id="signin-email" type="email" placeholder="Email" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-4 focus:outline-none focus:border-green-600">
-                    <input id="signin-password" type="password" placeholder="Password" class="w-full px-5 py-4 border border-gray-300 rounded-2xl mb-6 focus:outline-none focus:border-green-600">
-                    <button onclick="signIn()" class="w-full bg-green-700 text-white py-4 rounded-2xl font-bold text-lg">Login to Marketplace</button>
-                </div>
-            </div>
-            
-            <div class="px-8 pb-8 text-center text-sm text-gray-500">
-                <button onclick="closeAuthModal()" class="underline">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- POST PRODUCE MODAL -->
-    <div id="postModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[200]">
-        <div class="bg-white rounded-3xl w-full max-w-lg mx-4 p-8">
-            <h3 class="text-2xl font-bold mb-6">Post Your Produce</h3>
-            <input id="post-title" placeholder="e.g. Yellow Maize 2 tons" class="w-full px-5 py-4 border rounded-2xl mb-4">
-            <div class="grid grid-cols-2 gap-4">
-                <input id="post-price" type="number" placeholder="Price per ton (R)" class="w-full px-5 py-4 border rounded-2xl">
-                <input id="post-quantity" type="number" placeholder="Quantity (tons)" class="w-full px-5 py-4 border rounded-2xl">
-            </div>
-            <input id="post-location" placeholder="Location (e.g. Limpopo)" class="w-full mt-4 px-5 py-4 border rounded-2xl">
-            <button onclick="postListing()" class="mt-8 w-full bg-green-700 text-white py-4 rounded-2xl font-bold text-lg">Publish to Marketplace</button>
-            <button onclick="closePostModal()" class="mt-3 w-full py-4 text-gray-500">Cancel</button>
         </div>
     </div>
 
     <!-- TOAST -->
-    <div id="toast" class="hidden fixed bottom-8 right-8 bg-green-700 text-white px-8 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
-        <span id="toast-text"></span>
+    <div id="toast" class="hidden fixed bottom-8 right-8 bg-green-600 text-white px-6 py-4 rounded-3xl shadow-2xl flex items-center gap-3 z-50">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-text" class="font-medium"></span>
     </div>
-
-    <!-- PROFESSIONAL FOOTER -->
-    <footer class="bg-gray-900 text-gray-300 py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12">
-                
-                <!-- Logo & About -->
-                <div class="lg:col-span-5">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="bg-green-600 p-3 rounded-2xl">
-                            <i class="fas fa-seedling text-3xl text-white"></i>
-                        </div>
-                        <span class="text-3xl font-bold tracking-tighter">AgriConnect</span>
-                    </div>
-                    <p class="text-gray-400 max-w-md leading-relaxed">
-                        Empowering South African smallholder farmers with direct market access, 
-                        smart advisory, and fair financing. Growing together since 2026.
-                    </p>
-                    
-                    <!-- Social Icons -->
-                    <div class="flex gap-6 mt-10 text-xl">
-                        <a href="#" class="hover:text-green-400 transition"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="hover:text-green-400 transition"><i class="fab fa-x-twitter"></i></a>
-                        <a href="#" class="hover:text-green-400 transition"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="hover:text-green-400 transition"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="hover:text-green-400 transition"><i class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
-
-                <!-- Quick Links -->
-                <div class="lg:col-span-2">
-                    <h4 class="font-semibold text-white text-lg mb-6">Platform</h4>
-                    <ul class="space-y-4">
-                        <li><a href="index.html" class="hover:text-white transition">Home</a></li>
-                        <li><a href="marketplace.html" class="hover:text-white transition">Marketplace</a></li>
-                        <li><a href="advisory.html" class="hover:text-white transition">Advisory</a></li>
-                        <li><a href="financing.html" class="hover:text-white transition">Financing</a></li>
-                    </ul>
-                </div>
-
-                <div class="lg:col-span-2">
-                    <h4 class="font-semibold text-white text-lg mb-6">Company</h4>
-                    <ul class="space-y-4">
-                        <li><a href="#" class="hover:text-white transition">About Us</a></li>
-                        <li><a href="#" class="hover:text-white transition">Our Farmers</a></li>
-                        <li><a href="#" class="hover:text-white transition">Impact Stories</a></li>
-                        <li><a href="#" class="hover:text-white transition">Careers</a></li>
-                    </ul>
-                </div>
-
-                <!-- Contact -->
-                <div class="lg:col-span-3">
-                    <h4 class="font-semibold text-white text-lg mb-6">Get in Touch</h4>
-                    <div class="space-y-4 text-sm">
-                        <div class="flex items-start gap-3">
-                            <i class="fas fa-envelope mt-1"></i>
-                            <div>
-                                <div>info@agriconnect.co.za</div>
-                                <div class="text-xs text-gray-500">Support available 7 days a week</div>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <i class="fas fa-phone mt-1"></i>
-                            <div>+27 67 890 1234</div>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <i class="fas fa-map-marker-alt mt-1"></i>
-                            <div>Johannesburg, Gauteng<br>South Africa</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bottom Bar -->
-            <div class="mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-                <div>© 2026 AgriConnect South Africa. All Rights Reserved.</div>
-                <div class="flex gap-8">
-                    <a href="#" class="hover:text-white transition">Privacy Policy</a>
-                    <a href="#" class="hover:text-white transition">Terms of Service</a>
-                    <a href="#" class="hover:text-white transition">Farmer Safety</a>
-                </div>
-                <div class="text-green-400">🌱 Powered by Firebase Realtime Database</div>
-            </div>
-        </div>
-    </footer>
 
     <!-- FIREBASE SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -290,7 +269,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
 
     <script>
-        // ==================== FIREBASE CONFIG ====================
+        // ==================== FIREBASE CONFIG (same as main site) ====================
         const firebaseConfig = {
             apiKey: "AIzaSyDQZFUK4hnd-_lHUCfi_EHZ1gMM7p1rurE",
             authDomain: "agriconnect-a813a.firebaseapp.com",
@@ -300,175 +279,273 @@
             appId: "1:426251328870:web:742e51f276a1206d10fca7",
             measurementId: "G-LERNRKQ4S7"
         };
-
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.database();
 
         let currentUser = null;
+        let listingsData = {};
+        let usersData = {};
+        let growthChart, produceChart;
 
-        // ==================== AUTH STATE ====================
+        // ==================== ADMIN AUTH CHECK ====================
         auth.onAuthStateChanged(user => {
-            currentUser = user;
-            const greeting = document.getElementById('user-greeting');
-            const authBtn = document.getElementById('auth-btn');
-            const logoutBtn = document.getElementById('logout-btn');
-            const postBtn = document.getElementById('post-produce-btn');
-
-            if (user) {
-                greeting.textContent = `Hi, ${user.displayName || 'Farmer'}!`;
-                greeting.classList.remove('hidden');
-                authBtn.classList.add('hidden');
-                logoutBtn.classList.remove('hidden');
-                postBtn.classList.remove('hidden');
-            } else {
-                greeting.classList.add('hidden');
-                authBtn.classList.remove('hidden');
-                logoutBtn.classList.add('hidden');
-                postBtn.classList.add('hidden');
+            if (!user) {
+                window.location.href = "index.html"; // redirect to main site to login
+                return;
             }
+            // ADMIN EMAIL CHECK (change this to your preferred admin email)
+            if (user.email !== "admin@agriconnect.co.za") {
+                alert("⛔ Access Denied.\n\nOnly the admin account (admin@agriconnect.co.za) can access this dashboard.");
+                auth.signOut();
+                window.location.href = "index.html";
+                return;
+            }
+            currentUser = user;
+            document.getElementById('admin-name').textContent = user.displayName || "Admin";
+            document.getElementById('admin-email').textContent = user.email;
+            initDashboard();
         });
 
-        // ==================== AUTH MODAL ====================
-        function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); switchAuthTab(0); }
-        function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
-        function switchAuthTab(n) {
-            document.getElementById('signup-form').classList.toggle('hidden', n === 1);
-            document.getElementById('signin-form').classList.toggle('hidden', n === 0);
-            document.getElementById('tab-signup').classList.toggle('border-b-2', n === 0);
-            document.getElementById('tab-signup').classList.toggle('text-green-700', n === 0);
-            document.getElementById('tab-signin').classList.toggle('border-b-2', n === 1);
-            document.getElementById('tab-signin').classList.toggle('text-green-700', n === 1);
+        // ==================== INIT DASHBOARD ====================
+        function initDashboard() {
+            updateDate();
+            loadAllData();
+            initCharts();
+            setInterval(() => {
+                document.getElementById('last-updated').textContent = `Last updated ${new Date().toLocaleTimeString()}`;
+            }, 30000);
         }
 
-        async function signUp() {
-            const name = document.getElementById('signup-name').value.trim();
-            const email = document.getElementById('signup-email').value.trim();
-            const pass = document.getElementById('signup-password').value;
-            if (!email || !pass || pass.length < 6) return showToast("Check your details", true);
-
-            try {
-                const cred = await auth.createUserWithEmailAndPassword(email, pass);
-                await cred.user.updateProfile({ displayName: name });
-                await db.ref('users/' + cred.user.uid).set({ name, email, joined: Date.now() });
-                showToast(`Welcome ${name}! Account created.`);
-                closeAuthModal();
-            } catch (e) { showToast(e.message, true); }
+        function updateDate() {
+            const options = { weekday: 'long', month: 'long', day: 'numeric' };
+            document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-ZA', options);
         }
 
-        async function signIn() {
-            const email = document.getElementById('signin-email').value;
-            const pass = document.getElementById('signin-password').value;
-            try {
-                await auth.signInWithEmailAndPassword(email, pass);
-                showToast("Logged in successfully!");
-                closeAuthModal();
-            } catch (e) { showToast(e.message, true); }
-        }
-
-        function logout() {
-            auth.signOut();
-            showToast("Logged out");
-        }
-
-        // ==================== POST LISTING ====================
-        function openPostModal() {
-            if (!currentUser) return alert("Please login first");
-            document.getElementById('postModal').classList.remove('hidden');
-        }
-        function closePostModal() { document.getElementById('postModal').classList.add('hidden'); }
-
-        async function postListing() {
-            const title = document.getElementById('post-title').value;
-            const price = parseFloat(document.getElementById('post-price').value);
-            const qty = parseFloat(document.getElementById('post-quantity').value);
-            const location = document.getElementById('post-location').value;
-
-            if (!title || !price || !qty) return showToast("Fill all fields", true);
-
-            const listingRef = db.ref('listings').push();
-            await listingRef.set({
-                id: listingRef.key,
-                title: title,
-                price: price,
-                quantity: qty,
-                location: location || "South Africa",
-                seller: currentUser.displayName || "Anonymous Farmer",
-                sellerId: currentUser.uid,
-                posted: Date.now()
+        // ==================== DATA LOADING ====================
+        function loadAllData() {
+            // Users
+            db.ref('users').on('value', snapshot => {
+                usersData = snapshot.val() || {};
+                renderUsersTable();
+                updateStats();
             });
 
-            showToast("✅ Produce posted live!");
-            closePostModal();
-        }
-
-        // ==================== REAL-TIME LISTINGS ====================
-        function loadListings() {
-            const grid = document.getElementById('listings-grid');
+            // Listings
             db.ref('listings').on('value', snapshot => {
-                grid.innerHTML = '';
-                if (!snapshot.exists()) {
-                    grid.innerHTML = `<p class="col-span-full text-center py-12 text-gray-400">No listings yet. Be the first to post!</p>`;
-                    return;
-                }
-                snapshot.forEach(child => {
-                    const l = child.val();
-                    const card = `
-                        <div class="listing-card bg-white border border-gray-100 rounded-3xl overflow-hidden">
-                            <div class="h-48 bg-[url('https://picsum.photos/id/${Math.floor(Math.random()*100)+10}/800/500')] bg-cover"></div>
-                            <div class="p-6">
-                                <h4 class="font-bold text-xl">${l.title}</h4>
-                                <div class="flex justify-between mt-4">
-                                    <div>
-                                        <p class="text-xs text-gray-500">PRICE</p>
-                                        <p class="text-2xl font-bold text-green-700">R${l.price}</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="text-xs text-gray-500">QUANTITY</p>
-                                        <p class="font-semibold">${l.quantity} tons</p>
-                                    </div>
-                                </div>
-                                <div class="mt-6 pt-6 border-t text-sm flex justify-between items-center">
-                                    <span class="text-gray-500">${l.location}</span>
-                                    <span class="text-green-600 font-medium">${l.seller}</span>
-                                </div>
-                                <button onclick="buyNow('${l.title}')" class="mt-6 w-full py-3 bg-green-700 text-white rounded-2xl font-semibold">Buy Now</button>
-                            </div>
-                        </div>`;
-                    grid.innerHTML += card;
-                });
+                listingsData = snapshot.val() || {};
+                renderListingsTable();
+                renderRecentListings();
+                updateStats();
             });
         }
 
-        function buyNow(title) {
-            alert(`✅ Order placed for ${title}! (Demo - connected to Firebase)`);
+        function updateStats() {
+            const userCount = Object.keys(usersData).length;
+            const listingCount = Object.keys(listingsData).length;
+            
+            let totalTons = 0;
+            let totalValue = 0;
+            
+            Object.values(listingsData).forEach(l => {
+                totalTons += parseFloat(l.quantity) || 0;
+                totalValue += (parseFloat(l.price) || 0) * (parseFloat(l.quantity) || 0);
+            });
+
+            document.getElementById('stat-users').textContent = userCount;
+            document.getElementById('stat-listings').textContent = listingCount;
+            document.getElementById('stat-tons').textContent = totalTons.toLocaleString();
+            document.getElementById('stat-value').textContent = `R${(totalValue/1000000).toFixed(1)}m`;
+        }
+
+        // ==================== RENDER TABLES ====================
+        function renderUsersTable() {
+            const tbody = document.getElementById('users-table');
+            tbody.innerHTML = '';
+            
+            Object.values(usersData).forEach(user => {
+                const row = document.createElement('tr');
+                row.className = "hover:bg-gray-800/70 transition";
+                row.innerHTML = `
+                    <td class="px-8 py-5">${user.name || '—'}</td>
+                    <td class="px-8 py-5 text-green-400">${user.email}</td>
+                    <td class="px-8 py-5 text-gray-400">${new Date(user.joined).toLocaleDateString('en-ZA')}</td>
+                    <td class="px-8 py-5 text-center">
+                        <button onclick="flagUser('${user.email}')" 
+                                class="text-amber-400 hover:text-amber-300 text-xs font-medium flex items-center gap-1 mx-auto">
+                            <i class="fas fa-flag"></i> FLAG
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderListingsTable() {
+            const tbody = document.getElementById('listings-table');
+            tbody.innerHTML = '';
+            
+            Object.values(listingsData).sort((a,b) => b.posted - a.posted).forEach(listing => {
+                const row = document.createElement('tr');
+                row.className = "hover:bg-gray-800/70 transition";
+                row.innerHTML = `
+                    <td class="px-8 py-5 font-medium">${listing.title}</td>
+                    <td class="px-8 py-5">R${listing.price}</td>
+                    <td class="px-8 py-5">${listing.quantity} tons</td>
+                    <td class="px-8 py-5">${listing.location}</td>
+                    <td class="px-8 py-5 text-green-400">${listing.seller}</td>
+                    <td class="px-8 py-5 text-center">
+                        <button onclick="deleteListing('${listing.id}')" 
+                                class="bg-red-600 hover:bg-red-700 text-white text-xs px-5 py-2 rounded-2xl transition">
+                            DELETE
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderRecentListings() {
+            const container = document.getElementById('recent-listings');
+            container.innerHTML = '';
+            const recent = Object.values(listingsData)
+                .sort((a,b) => b.posted - a.posted)
+                .slice(0, 5);
+            
+            recent.forEach(l => {
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center bg-gray-800 rounded-2xl px-6 py-4";
+                div.innerHTML = `
+                    <div>
+                        <div class="font-medium">${l.title}</div>
+                        <div class="text-xs text-gray-400">${l.seller} • ${l.location}</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-green-400 font-bold">R${l.price}</div>
+                        <div class="text-xs text-gray-400">${l.quantity} tons</div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // ==================== DELETE LISTING ====================
+        async function deleteListing(id) {
+            if (!confirm("Delete this listing permanently?")) return;
+            try {
+                await db.ref('listings/' + id).remove();
+                showToast("Listing deleted successfully");
+            } catch (e) {
+                showToast("Failed to delete listing", true);
+            }
+        }
+
+        function flagUser(email) {
+            showToast(`User ${email} has been flagged for review (demo)`);
+        }
+
+        // ==================== FILTERS ====================
+        function filterUsers() {
+            const term = document.getElementById('user-search').value.toLowerCase();
+            const rows = document.querySelectorAll('#users-table tr');
+            rows.forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
+            });
         }
 
         function filterListings() {
-            const term = document.getElementById('search-input').value.toLowerCase();
-            const cards = document.querySelectorAll('.listing-card');
-            cards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                card.style.display = text.includes(term) ? '' : 'none';
+            const term = document.getElementById('listing-search').value.toLowerCase();
+            const rows = document.querySelectorAll('#listings-table tr');
+            rows.forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
             });
         }
 
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        // ==================== CHARTS ====================
+        function initCharts() {
+            // Growth Chart (mock + real feel)
+            const ctx1 = document.getElementById('growthChart');
+            growthChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: ['Feb 20', 'Feb 21', 'Feb 22', 'Feb 23', 'Feb 24', 'Feb 25', 'Feb 26'],
+                    datasets: [{
+                        label: 'New Listings',
+                        data: [12, 19, 15, 28, 22, 31, 45],
+                        borderColor: '#10b981',
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointRadius: 0
+                    }]
+                },
+                options: { 
+                    plugins: { legend: { display: false } },
+                    scales: { y: { grid: { color: '#374151' } }, x: { grid: { color: '#374151' } } }
+                }
+            });
+
+            // Produce Chart
+            const ctx2 = document.getElementById('produceChart');
+            produceChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Maize', 'Tomatoes', 'Potatoes', 'Other'],
+                    datasets: [{
+                        data: [42, 28, 18, 12],
+                        backgroundColor: ['#10b981', '#eab308', '#3b82f6', '#8b5cf6']
+                    }]
+                },
+                options: {
+                    plugins: { legend: { position: 'bottom', labels: { color: '#d1d5db', padding: 20 } } }
+                }
+            });
+        }
+
+        // ==================== SECTION SWITCH ====================
+        function showSection(section) {
+            document.querySelectorAll('[id^="section-"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`section-${section}`).classList.remove('hidden');
+            
+            document.querySelectorAll('[id^="nav-"]').forEach(el => el.classList.remove('sidebar-link-active'));
+            document.getElementById(`nav-${section}`).classList.add('sidebar-link-active');
+            
+            document.getElementById('page-title').textContent = {
+                overview: 'Overview',
+                users: 'Farmers',
+                listings: 'Live Listings',
+                analytics: 'Analytics'
+            }[section];
+        }
+
+        // ==================== UTILITIES ====================
+        function refreshAll() {
+            showToast("Data refreshed");
+            loadAllData();
+        }
+
+        function refreshListings() {
+            renderListingsTable();
+            showToast("Listings refreshed");
         }
 
         function showToast(msg, error = false) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-text').innerHTML = msg;
-            toast.style.backgroundColor = error ? '#dc2626' : '#15803d';
+            toast.style.backgroundColor = error ? '#dc2626' : '#10b981';
             toast.classList.remove('hidden');
             setTimeout(() => toast.classList.add('hidden'), 4000);
         }
 
-        // ==================== INIT ====================
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = "index.html";
+            });
+        }
+
+        // ==================== AUTO LOGIN REDIRECT ====================
         window.onload = () => {
-            loadListings();
-            console.log("%c✅ AgriConnect is now FULLY FUNCTIONAL with Firebase Realtime Database", "color:#166534;font-size:15px;font-weight:bold");
+            // If already logged in on main site, it will be handled by auth listener
+            console.log("%c✅ AgriConnect Admin Dashboard ready", "color:#10b981;font-size:14px;font-weight:bold");
         };
     </script>
 </body>
