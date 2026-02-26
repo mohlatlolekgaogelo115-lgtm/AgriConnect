@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriConnect | Empowering Emerging Farmers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .hero-gradient { background: linear-gradient(135deg, #166534 0%, #15803d 100%); }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <nav class="sticky top-0 z-50 glass border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="bg-green-600 p-2 rounded-lg">
+                        <i class="fas fa-seedling text-white text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-green-800 tracking-tight">AgriConnect</span>
+                </div>
+                <div class="hidden md:flex space-x-8 font-medium">
+                    <a href="#market" class="hover:text-green-600 transition">Marketplace</a>
+                    <a href="#advisory" class="hover:text-green-600 transition">Advisory</a>
+                    <a href="#finance" class="hover:text-green-600 transition">Financing</a>
+                </div>
+                <button class="bg-green-700 text-white px-6 py-2 rounded-full font-semibold hover:bg-green-800 transition shadow-lg">
+                    Join as Farmer
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-gradient text-white py-20 px-4">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <span class="bg-green-500/30 text-green-100 px-4 py-1 rounded-full text-sm font-semibold uppercase tracking-wider">Empowering South African Agriculture</span>
+                <h1 class="text-5xl md:text-6xl font-extrabold mt-6 leading-tight">
+                    From Soil to Shelf, <br><span class="text-green-300">Simplified.</span>
+                </h1>
+                <p class="mt-6 text-lg text-green-50/80 leading-relaxed">
+                    Connecting emerging smallholder farmers directly to global exporters, retailers, and local township markets. Real-time data, smarter yields, and fair prices.
+                </p>
+                <div class="mt-10 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button class="bg-white text-green-800 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition shadow-2xl">
+                        Start Selling Now
+                    </button>
+                    <button class="border-2 border-green-400/50 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition">
+                        Find Produce
+                    </button>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="bg-white/10 p-4 rounded-3xl border border-white/20 shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&q=80&w=800" alt="Farmer checking crop" class="rounded-2xl shadow-inner">
+                </div>
+                <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-2xl border border-gray-100 hidden lg:block">
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-orange-100 p-3 rounded-full"><i class="fas fa-chart-line text-orange-600"></i></div>
+                        <div>
+                            <p class="text-xs text-gray-500 font-bold uppercase">Maize Price Forecast</p>
+                            <p class="text-xl font-bold text-gray-800">R3,450 / Ton <span class="text-green-500 text-sm">↑ 4%</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900">Everything a Modern Farmer Needs</h2>
+            <p class="text-gray-600 mt-4 max-w-2xl mx-auto">A mobile-first platform designed for the field, working offline when you need it most.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition group">
+                <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition">
+                    <i class="fas fa-handshake text-2xl text-blue-600 group-hover:text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Direct Market Access</h3>
+                <p class="text-gray-600">Skip the middleman. Sell directly to retailers, exporters, and local Spaza networks with transparent pricing.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition group">
+                <div class="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-green-600 transition">
+                    <i class="fas fa-cloud-sun-rain text-2xl text-green-600 group-hover:text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">AI-Driven Advisory</h3>
+                <p class="text-gray-600">Hyper-local weather alerts and IoT soil data sent via SMS or App to optimize your planting and harvest cycles.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition group">
+                <div class="w-14 h-14 bg-yellow-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-yellow-600 transition">
+                    <i class="fas fa-wallet text-2xl text-yellow-600 group-hover:text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Input Financing</h3>
+                <p class="text-gray-600">Access credit for seeds, fertilizers, and equipment based on your harvest history and digital footprint.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="advisory" class="bg-gray-900 py-24 text-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-16 items-center">
+            <div class="order-2 md:order-1 relative">
+                <div class="bg-gray-800 rounded-3xl p-6 border border-gray-700">
+                    <div class="flex justify-between items-center mb-8">
+                        <h4 class="font-bold">Farm Insight Dashboard</h4>
+                        <span class="text-xs bg-green-500/20 text-green-400 px-3 py-1 rounded-full uppercase">Live Updates</span>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-gray-700/50 p-4 rounded-xl flex items-center justify-between">
+                            <span>Soil Moisture (Section A)</span>
+                            <span class="text-blue-400 font-bold">42% - Optimal</span>
+                        </div>
+                        <div class="bg-gray-700/50 p-4 rounded-xl flex items-center justify-between">
+                            <span>Pest Risk Level</span>
+                            <span class="text-yellow-400 font-bold">Low</span>
+                        </div>
+                        <div class="bg-green-600/20 p-4 rounded-xl border border-green-500/30">
+                            <p class="text-sm">Recommendation: Start Nitrogen application in 48 hours before rain.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="order-1 md:order-2">
+                <h2 class="text-4xl font-bold mb-6">Smart Farming for Every Scale</h2>
+                <p class="text-gray-400 text-lg mb-8">We use satellite imagery and IoT sensors to provide enterprise-grade insights to smallholder farms, ensuring you never miss a harvest window.</p>
+                <ul class="space-y-4">
+                    <li class="flex items-center space-x-3">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span>Offline-first training modules in local languages</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span>SMS-based weather alerts for feature-phone users</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white border-t border-gray-200 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex justify-center items-center space-x-2 mb-6">
+                <div class="bg-green-600 p-1.5 rounded-md">
+                    <i class="fas fa-seedling text-white"></i>
+                </div>
+                <span class="text-xl font-bold text-green-800">AgriConnect</span>
+            </div>
+            <p class="text-gray-500">Cultivating the future of South African Agriculture.</p>
+            <div class="mt-8 pt-8 border-t border-gray-100 text-sm text-gray-400">
+                &copy; 2026 AgriConnect South Africa. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
