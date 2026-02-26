@@ -389,22 +389,6 @@
         // ==================== INIT ====================
         window.onload = () => {
             loadListings();
-            // Seed some demo listings if empty
-            setTimeout(() => {
-                db.ref('listings').once('value', snap => {
-                    if (!snap.exists()) {
-                        const demo = [
-                            {title:"Yellow Maize 5 tons", price:3450, quantity:5, location:"Limpopo", seller:"Thabo Farms"},
-                            {title:"Fresh Tomatoes 2 tons", price:8900, quantity:2, location:"Mpumalanga", seller:"Mama's Veggies"},
-                            {title:"Potatoes 10 tons", price:2800, quantity:10, location:"Free State", seller:"Highveld Produce"}
-                        ];
-                        demo.forEach(d => {
-                            db.ref('listings').push(d);
-                        });
-                    }
-                });
-            }, 1200);
-
             console.log("%c✅ AgriConnect is now FULLY FUNCTIONAL with Firebase Realtime Database", "color:#166534;font-size:15px;font-weight:bold");
         };
     </script>
